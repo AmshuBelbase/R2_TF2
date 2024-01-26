@@ -1,0 +1,18 @@
+{
+  "python.autoComplete.extraPaths": [
+    "/home/amshu/ros2_ws/install/r2_test/lib/python3.10/site-packages",
+    "/home/amshu/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages",
+    "/home/amshu/ros2_ws/install/my_r2_tf2/lib/python3.10/site-packages",
+    "/home/amshu/ros2_ws/install/learning_tf2_py/lib/python3.10/site-packages",
+    "/opt/ros/humble/lib/python3.10/site-packages",
+    "/opt/ros/humble/local/lib/python3.10/dist-packages"
+  ],
+  "python.analysis.extraPaths": [
+    "/home/amshu/ros2_ws/install/r2_test/lib/python3.10/site-packages",
+    "/home/amshu/ros2_ws/install/my_robot_controller/lib/python3.10/site-packages",
+    "/home/amshu/ros2_ws/install/my_r2_tf2/lib/python3.10/site-packages",
+    "/home/amshu/ros2_ws/install/learning_tf2_py/lib/python3.10/site-packages",
+    "/opt/ros/humble/lib/python3.10/site-packages",
+    "/opt/ros/humble/local/lib/python3.10/dist-packages"
+  ]
+}
