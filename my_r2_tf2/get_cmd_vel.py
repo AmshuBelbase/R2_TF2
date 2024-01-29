@@ -10,6 +10,7 @@ class GetCmdVel(Node):
 
     def __init__(self):
         super().__init__('get_cmd_vel')
+        self.called_bool = False
         self.subscription = self.create_subscription(Twist, 'cmd_vel', self.cmd_vel_callback, 10)
 
     def cmd_vel_callback(self, msg: Twist):
@@ -27,7 +28,6 @@ class GetCmdVel(Node):
         matrix_3x1 = np.array([[linear_x],
                             [linear_y],
                             [angular_z]])
-
         # Perform matrix multiplication
         result_matrix = np.dot(matrix_4x3, matrix_3x1)
         self.get_logger().info(f"Front Right: {result_matrix[0,0]}, Front Left: {result_matrix[1,0]}, Back Left: {result_matrix[2,0]}, Back Right: {result_matrix[3,0]}")
