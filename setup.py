@@ -23,12 +23,12 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [ 
-        	'static_turtle_tf2_broadcaster = learning_tf2_py.static_turtle_tf2_broadcaster:main',
-            'turtle_tf2_listener = learning_tf2_py.turtle_tf2_listener:main',
-            'turtle_tf2_broadcaster = learning_tf2_py.turtle_tf2_broadcaster:main',
-            'tf2_to_cmd_vel = learning_tf2_py.tf2_to_cmd_vel:main',
-            'dynamic_pose_to_tf = learning_tf2_py.dynamic_pose_to_tf:main',
-            'get_cmd_vel = learning_tf2_py.get_cmd_vel:main',
+        	'static_turtle_tf2_broadcaster = my_r2_tf2.static_turtle_tf2_broadcaster:main',
+            'turtle_tf2_listener = my_r2_tf2.turtle_tf2_listener:main',
+            'turtle_tf2_broadcaster = my_r2_tf2.turtle_tf2_broadcaster:main',
+            'tf2_to_cmd_vel = my_r2_tf2.tf2_to_cmd_vel:main',
+            'dynamic_pose_to_tf = my_r2_tf2.dynamic_pose_to_tf:main',
+            'get_cmd_vel = my_r2_tf2.get_cmd_vel:main',
         ],
     },
 )
