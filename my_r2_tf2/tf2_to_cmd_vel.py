@@ -37,16 +37,18 @@ class FrameListener(Node):
             return
 
         msg = Twist()
-        scale_rotation_rate = 1.0
-        msg.angular.z = scale_rotation_rate * math.atan2(
-            t.transform.translation.y,
-            t.transform.translation.x)
+        # scale_rotation_rate = 0.0
+        # msg.angular.z = scale_rotation_rate * math.atan2(
+        #     t.transform.translation.y,
+        #     t.transform.translation.x)
 
+        # scale_forward_speed = 0.5
+        # msg.linear.x = scale_forward_speed * math.sqrt(
+        #     t.transform.translation.x ** 2 +
+        #     t.transform.translation.y ** 2)
         scale_forward_speed = 0.5
-        msg.linear.x = scale_forward_speed * math.sqrt(
-            t.transform.translation.x ** 2 +
-            t.transform.translation.y ** 2)
-
+        msg.linear.x = scale_forward_speed * t.transform.translation.x
+        msg.linear.y = scale_forward_speed * t.transform.translation.y
         self.publisher.publish(msg) 
 
 
