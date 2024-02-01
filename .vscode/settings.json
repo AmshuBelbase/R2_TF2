@@ -14,5 +14,7 @@
     "/home/amshu/ros2_ws/install/learning_tf2_py/lib/python3.10/site-packages",
     "/opt/ros/humble/lib/python3.10/site-packages",
     "/opt/ros/humble/local/lib/python3.10/dist-packages"
-  ]
+  ],
+  "python.analysis.typeCheckingMode": "off",
+  "python.analysis.autoImportCompletions": true
 }

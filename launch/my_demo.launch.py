@@ -33,11 +33,11 @@ def generate_launch_description():
             executable='static_transform_publisher',
             name='my_static_transform_publisher',
             output='screen',
-            arguments=['--x', '5.5', '--y', '0', '--z', '0', '--yaw', '0', '--pitch', '0', '--roll', '0', '--frame-id', 'r2', '--child-frame-id', 'ball']
+            arguments=['--x', '4', '--y', '0', '--z', '0', '--yaw', '0', '--pitch', '0', '--roll', '0', '--frame-id', 'r2', '--child-frame-id', 'ball']
         ),
         Node(
             package='my_r2_tf2',
             executable='get_cmd_vel',
-            name='get_cmd_vel'
+            name='get_send_cmd_vel'
         )
     ])
