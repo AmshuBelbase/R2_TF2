@@ -2,7 +2,8 @@ import numpy as np
 import rclpy 
 from rclpy.node import Node 
 from geometry_msgs.msg import Twist 
-
+import serial 
+import time
 
 
 class GetCmdVel(Node):
@@ -29,6 +30,27 @@ class GetCmdVel(Node):
         # Perform matrix multiplication
         result_matrix = np.dot(matrix_4x3, matrix_3x1)
         self.get_logger().info(f"Front Right: {result_matrix[0,0]}, Front Left: {result_matrix[1,0]}, Back Left: {result_matrix[2,0]}, Back Right: {result_matrix[3,0]}")        
+        serial_port = '/dev/ttyACM0'
+        baud_rate = 115200
+        with serial.Serial(serial_port, baud_rate, timeout=1) as ser:
+            # Open serial port
+            time.sleep(2) 
+
+            # Define floats to send
+            float1 = result_matrix[0,0]
+            float2 = result_matrix[1,0]
+            float3 = result_matrix[2,0]
+            float4 = result_matrix[3,0]
+
+            # Convert to bytes
+            data = (str(float1) + '|' + 
+                    str(float2) + '|' +
+                    str(float3) + '|' +
+                    str(float4)) + "#"
+            
+            # Send data
+            ser.write(data.encode())  
+            print(f"Sent: {data}")
 
 def main(args=None):
     rclpy.init(args=args)
