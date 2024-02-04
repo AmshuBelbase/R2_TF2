@@ -22,12 +22,9 @@ setup(
     license='Apache-2.0',
     tests_require=['pytest'],
     entry_points={
-        'console_scripts': [ 
-        	'static_turtle_tf2_broadcaster = my_r2_tf2.static_turtle_tf2_broadcaster:main',
-            'turtle_tf2_listener = my_r2_tf2.turtle_tf2_listener:main',
+        'console_scripts': [  
             'turtle_tf2_broadcaster = my_r2_tf2.turtle_tf2_broadcaster:main',
-            'tf2_to_cmd_vel = my_r2_tf2.tf2_to_cmd_vel:main',
-            'dynamic_pose_to_tf = my_r2_tf2.dynamic_pose_to_tf:main',
+            'tf2_to_cmd_vel = my_r2_tf2.tf2_to_cmd_vel:main', 
             'get_cmd_vel = my_r2_tf2.get_cmd_vel:main',
         ],
     },
