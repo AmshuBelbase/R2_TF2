@@ -16,7 +16,7 @@ class FramePublisher(Node):
         # Initialize the transform broadcaster
         self.tf_broadcaster = TransformBroadcaster(self)
         self.on_timer_publish()
-        self.timer = self.create_timer(10.0, self.on_timer_publish) 
+        self.timer = self.create_timer(3.0, self.on_timer_publish) 
 
     def on_timer_publish(self):
         t = TransformStamped() 
@@ -24,8 +24,10 @@ class FramePublisher(Node):
         t.header.frame_id = 'r2'
         t.child_frame_id = self.target_frame
 
-        x_axis = random.randint(-10, 10)
-        y_axis = random.randint(-10, 10)
+        # x_axis = random.randint(-10, 10)
+        # y_axis = random.randint(-10, 10)
+        x_axis = -4
+        y_axis = 4
         x_axis_f = float(x_axis)
         y_axis_f = float(y_axis)
 

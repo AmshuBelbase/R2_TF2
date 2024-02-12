@@ -18,10 +18,15 @@ class GetCmdVel(Node):
         angular_z = msg.angular.z
         self.get_logger().info(f"X: {linear_x}, Y: {linear_y}, Z: {angular_z}") 
         # Define a Inverse Kinetics ~ 4x3 matrix
-        matrix_4x3 = np.array([[11.1347660235131, -11.1363136451255, -5.21299212039026],
-                            [11.1368294711969, 11.1342501018466, 5.21299207563835],
-                            [-11.1337341562841, 11.1373452733668, 5.21299207563835],
-                            [-11.1357977951537, -11.1352819212825, -5.21299212039026]])
+        # matrix_4x3 = np.array([[11.1347660235131, -11.1363136451255, -5.21299212039026],
+        #                     [11.1368294711969, 11.1342501018466, 5.21299207563835],
+        #                     [-11.1337341562841, 11.1373452733668, 5.21299207563835],
+        #                     [-11.1357977951537, -11.1352819212825, -5.21299212039026]])
+        matrix_4x3 = np.array([[15.75, 0, -5.66909078166105],
+                            [0, 15.75, 5.66909078166105],
+                            [-15.75, 0, 5.66909078166105],
+                            [0, -15.75,-5.66909078166105]])
+
 
         # Define a Bot Velocity ~ 3x1 matrix
         matrix_3x1 = np.array([[linear_x],
@@ -37,16 +42,16 @@ class GetCmdVel(Node):
             time.sleep(2) 
 
             # Define floats to send
-            float1 = result_matrix[0,0]
-            float2 = result_matrix[1,0]
-            float3 = result_matrix[2,0]
-            float4 = result_matrix[3,0]
+            fr = result_matrix[0,0]
+            fl = result_matrix[1,0]
+            bl = result_matrix[2,0]
+            br = result_matrix[3,0]
 
             # Convert to bytes
-            data = (str(float1) + '|' + 
-                    str(float2) + '|' +
-                    str(float3) + '|' +
-                    str(float4)) + "#"
+            data = (str(fr) + '|' + 
+                    str(fl) + '|' +
+                    str(bl) + '|' +
+                    str(br)) + "#"
             
             # Send data
             ser.write(data.encode())  
