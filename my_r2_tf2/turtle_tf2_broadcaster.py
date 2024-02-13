@@ -26,7 +26,7 @@ class FramePublisher(Node):
 
         # x_axis = random.randint(-10, 10)
         # y_axis = random.randint(-10, 10)
-        x_axis = -4
+        x_axis = 4
         y_axis = 4
         x_axis_f = float(x_axis)
         y_axis_f = float(y_axis)
