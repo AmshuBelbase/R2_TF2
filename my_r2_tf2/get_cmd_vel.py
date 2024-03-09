@@ -33,8 +33,7 @@ class GetCmdVel(Node):
                             [linear_y],
                             [angular_z]])
         # Perform matrix multiplication
-        result_matrix = np.dot(matrix_4x3, matrix_3x1)
-        self.get_logger().info(f"Front Right: {result_matrix[0,0]}, Front Left: {result_matrix[1,0]}, Back Left: {result_matrix[2,0]}, Back Right: {result_matrix[3,0]}")        
+        result_matrix = np.dot(matrix_4x3, matrix_3x1)        
         serial_port = '/dev/ttyACM0'
         baud_rate = 115200
         with serial.Serial(serial_port, baud_rate, timeout=1) as ser:
@@ -56,6 +55,7 @@ class GetCmdVel(Node):
             # Send data
             ser.write(data.encode())  
             print(f"Sent: {data}")
+        self.get_logger().info(f"Front Right: {result_matrix[0,0]}, Front Left: {result_matrix[1,0]}, Back Left: {result_matrix[2,0]}, Back Right: {result_matrix[3,0]}")
 
 def main(args=None):
     rclpy.init(args=args)

@@ -3,6 +3,7 @@ import rclpy
 from rclpy.node import Node
 from tf2_ros import TransformBroadcaster
 import random
+import matplotlib.pyplot as plt
 
 class FramePublisher(Node):
 
@@ -11,12 +12,12 @@ class FramePublisher(Node):
 
         # Declare and acquire `turtlename` parameter
         self.target_frame = self.declare_parameter(
-            'target_frame', 'ball').get_parameter_value().string_value
+            'target_frame', 'ball').get_parameter_value().string_value  
 
         # Initialize the transform broadcaster
         self.tf_broadcaster = TransformBroadcaster(self)
         self.on_timer_publish()
-        self.timer = self.create_timer(3.0, self.on_timer_publish) 
+        self.timer = self.create_timer(10.0, self.on_timer_publish) 
 
     def on_timer_publish(self):
         t = TransformStamped() 
@@ -24,10 +25,13 @@ class FramePublisher(Node):
         t.header.frame_id = 'r2'
         t.child_frame_id = self.target_frame
 
-        # x_axis = random.randint(-10, 10)
-        # y_axis = random.randint(-10, 10)
-        x_axis = 4
-        y_axis = 4
+        x_axis = random.randint(-8, 8)
+        y_axis = random.randint(-8, 8)
+        # plt.arrow(0, 0, x_axis, y_axis, width = 0.05)
+        # plt.show(block=False)
+        # plt.pause(3)
+        # x_axis = -4
+        # y_axis = 4
         x_axis_f = float(x_axis)
         y_axis_f = float(y_axis)
 
