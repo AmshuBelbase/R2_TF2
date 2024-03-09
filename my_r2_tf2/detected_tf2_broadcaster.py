@@ -17,7 +17,7 @@ SCORE_THRESHOLD = 0.2
 NMS_THRESHOLD = 0.4
 CONFIDENCE_THRESHOLD = 0.4
 
-FRAME_SKIP = 2  # Number of frames to skip
+FRAME_SKIP = 12  # Number of frames to skip
 is_cuda = len(sys.argv) > 1 and sys.argv[1] == "cuda"
 
 class FramePublisher(Node):
@@ -79,8 +79,7 @@ class FramePublisher(Node):
                             (box[0] + box[2], box[1]), color, -1)
                 cv2.putText(frame, class_list[classid], (box[0],
                             box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 0, 0))
-                height, width, channels = frame.shape 
-                print("Width:", width)
+                height, width, channels = frame.shape  
                 print(box)
                 dist = 0
                 if(box[2]>box[3]):
@@ -93,8 +92,8 @@ class FramePublisher(Node):
                 dist = np.interp(dist, width_height_max, ball_distance)
                 dist = int(dist)
 
-                self.linear_x = int(width/2) - box[0]
-                self.linear_y = box[1] 
+                self.linear_x = (int(width/2) - box[0])/10
+                self.linear_y = (height - box[1])/10
                 plt.arrow(0,0,self.linear_x,self.linear_y, width=0.5)
                 plt.show(block=False)
                 plt.pause(0.01) 
