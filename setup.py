@@ -12,7 +12,9 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        (os.path.join('share', package_name), glob('launch/*.launch.py'))
+        (os.path.join('share', package_name), glob('launch/*.launch.py')),
+        (os.path.join('share', package_name), glob(package_name+'/classes.txt')),
+        (os.path.join('share', package_name), glob(package_name+'/best.onnx'))
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -24,6 +26,7 @@ setup(
     entry_points={
         'console_scripts': [  
             'turtle_tf2_broadcaster = my_r2_tf2.turtle_tf2_broadcaster:main',
+            'detected_tf2_broadcaster = my_r2_tf2.detected_tf2_broadcaster:main',
             'tf2_to_cmd_vel = my_r2_tf2.tf2_to_cmd_vel:main', 
             'get_cmd_vel = my_r2_tf2.get_cmd_vel:main',
         ],
