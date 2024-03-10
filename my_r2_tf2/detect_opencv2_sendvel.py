@@ -38,7 +38,7 @@ def detect(image, net):
 
 def load_capture():
     # capture = cv2.VideoCapture("./video17.mp4")
-    capture = cv2.VideoCapture(0)  # Open camera capture object
+    capture = cv2.VideoCapture(1)  # Open camera capture object
     return capture
 
 

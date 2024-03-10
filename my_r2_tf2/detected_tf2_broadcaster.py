@@ -71,41 +71,46 @@ class FramePublisher(Node):
             outs = FramePublisher.detect(inputImage, net)
 
             class_ids, confidences, boxes = FramePublisher.wrap_detection(inputImage, outs[0])
-
             # Interpolate with previous frame
             if prev_frame is not None:
                 alpha = 0.5  # Interpolation factor
                 frame = cv2.addWeighted(prev_frame, alpha, frame, 1-alpha, 0)
-
-            for (classid, confidence, box) in zip(class_ids, confidences, boxes):
-                color = colors[int(classid) % len(colors)]
-                cv2.rectangle(frame, box, color, 2)
-                cv2.rectangle(frame, (box[0], box[1] - 20),
-                            (box[0] + box[2], box[1]), color, -1)
-                cv2.putText(frame, class_list[classid], (box[0],
-                            box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 0, 0))
-                height, width, channels = frame.shape  
-                print(box)
-                dist = 0
-                if(box[2]>box[3]):
-                    dist = box[2]
-                else:
-                    dist = box[3]
-
-                width_height_max = [16, 18, 20, 21, 25, 28, 33, 40, 48, 54, 58, 64, 69, 74, 85]
-                ball_distance = [310, 280, 250, 230, 200, 180, 150, 125, 100, 90, 80, 70, 60, 50, 40] 
-                dist = np.interp(dist, width_height_max, ball_distance)
-                dist = int(dist)
-
-                self.linear_x = (int(width/2) - box[0])/40
-                self.linear_y = (height - box[1])/40
-                plt.arrow(0,0,self.linear_x,self.linear_y, width=0.5)
-                plt.show(block=False)
-                plt.pause(0.01) 
-                # Initialize the transform broadcaster
+                
+            if not boxes:
+                self.linear_x = 0
+                self.linear_y = 0
                 self.tf_broadcaster = TransformBroadcaster(self)
                 self.on_timer_publish()
-                # self.timer = self.create_timer(10.0, self.on_timer_publish)  
+            else:  
+                for (classid, confidence, box) in zip(class_ids, confidences, boxes):
+                    color = colors[int(classid) % len(colors)]
+                    cv2.rectangle(frame, box, color, 2)
+                    cv2.rectangle(frame, (box[0], box[1] - 20),
+                                (box[0] + box[2], box[1]), color, -1)
+                    cv2.putText(frame, class_list[classid], (box[0],
+                                box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, .5, (0, 0, 0))
+                    height, width, channels = frame.shape  
+                    # print(box)
+                    dist = 0
+                    if(box[2]>box[3]):
+                        dist = box[2]
+                    else:
+                        dist = box[3]
+
+                    width_height_max = [16, 18, 20, 21, 25, 28, 33, 40, 48, 54, 58, 64, 69, 74, 85]
+                    ball_distance = [310, 280, 250, 230, 200, 180, 150, 125, 100, 90, 80, 70, 60, 50, 40] 
+                    dist = np.interp(dist, width_height_max, ball_distance)
+                    dist = int(dist)
+
+                    self.linear_x = (int(width/2) - box[0])/40
+                    self.linear_y = (height - box[1])/40
+                    plt.arrow(0,0,self.linear_x,self.linear_y, width=0.5)
+                    plt.show(block=False)
+                    plt.pause(0.01) 
+                    # Initialize the transform broadcaster
+                    self.tf_broadcaster = TransformBroadcaster(self)
+                    self.on_timer_publish()
+                    # self.timer = self.create_timer(10.0, self.on_timer_publish)  
 
             if frame_count >= 0:  # 30
                 end = time.time_ns()
@@ -172,7 +177,7 @@ class FramePublisher(Node):
 
         x_factor = image_width / INPUT_WIDTH
         y_factor = image_height / INPUT_HEIGHT
-
+        
         for r in range(rows):
             row = output_data[r]
             confidence = row[4]
@@ -232,7 +237,7 @@ class FramePublisher(Node):
 
     def load_capture(self):
         # capture = cv2.VideoCapture("./video17.mp4")
-        capture = cv2.VideoCapture(3)  # Open camera capture object
+        capture = cv2.VideoCapture(1)  # Open camera capture object
         return capture
  
     def load_classes(self):

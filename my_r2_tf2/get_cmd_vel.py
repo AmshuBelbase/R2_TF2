@@ -10,7 +10,7 @@ class GetCmdVel(Node):
 
     def __init__(self):
         super().__init__('get_cmd_vel') 
-        self.subscription = self.create_subscription(Twist, 'cmd_vel', self.cmd_vel_callback, 10)
+        self.subscription = self.create_subscription(Twist, 'cmd_vel', self.cmd_vel_callback, 1)
 
     def cmd_vel_callback(self, msg: Twist):
         linear_x = msg.linear.x
