@@ -13,11 +13,11 @@ import time
 from launch_ros.substitutions import FindPackageShare
 INPUT_WIDTH = 640
 INPUT_HEIGHT = 640
-SCORE_THRESHOLD = 0.2
+SCORE_THRESHOLD = 0.2 
 NMS_THRESHOLD = 0.4
 CONFIDENCE_THRESHOLD = 0.4
 
-FRAME_SKIP = 12  # Number of frames to skip
+FRAME_SKIP = 2  # Number of frames to skip
 is_cuda = len(sys.argv) > 1 and sys.argv[1] == "cuda"
 
 class FramePublisher(Node):
@@ -135,7 +135,7 @@ class FramePublisher(Node):
         t.child_frame_id = self.target_frame
 
         x_axis = self.linear_x
-        y_axis = self.linear_y
+        y_axis = 0 - self.linear_y
 
         x_axis_f = float(x_axis)
         y_axis_f = float(y_axis)
@@ -227,7 +227,7 @@ class FramePublisher(Node):
 
     def load_capture(self):
         # capture = cv2.VideoCapture("./video17.mp4")
-        capture = cv2.VideoCapture(0)  # Open camera capture object
+        capture = cv2.VideoCapture(3)  # Open camera capture object
         return capture
  
     def load_classes(self):
