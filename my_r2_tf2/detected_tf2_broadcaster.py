@@ -16,7 +16,7 @@ INPUT_HEIGHT = 640
 SCORE_THRESHOLD = 0.2 
 NMS_THRESHOLD = 0.4
 CONFIDENCE_THRESHOLD = 0.4
-
+cam_source = 1
 FRAME_SKIP = 2  # Number of frames to skip
 is_cuda = len(sys.argv) > 1 and sys.argv[1] == "cuda"
 
@@ -53,13 +53,15 @@ class FramePublisher(Node):
             if frame_all is None:
                 print("End of stream")
                 break
+            frame = frame_all
             # Split the stereo frame into left and right images
-            height, width, _ = frame_all.shape
-            width //= 2
-            frame = frame_all[:, :width, :]
-            right_frame = frame_all[:, width:, :]
-            prev_frame = frame.copy()  # Save current frame for interpolation
-
+            if cam_source == 3:
+                height, width, _ = frame_all.shape
+                width //= 2
+                frame = frame_all[:, :width, :]
+                right_frame = frame_all[:, width:, :]
+                prev_frame = frame.copy()  # Save current frame for interpolation 
+                
             frame_count += 1
             total_frames += 1
 
@@ -237,7 +239,7 @@ class FramePublisher(Node):
 
     def load_capture(self):
         # capture = cv2.VideoCapture("./video17.mp4")
-        capture = cv2.VideoCapture(1)  # Open camera capture object
+        capture = cv2.VideoCapture(cam_source)  # Open camera capture object
         return capture
  
     def load_classes(self):

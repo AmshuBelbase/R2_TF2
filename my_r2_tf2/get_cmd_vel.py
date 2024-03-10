@@ -36,7 +36,7 @@ class GetCmdVel(Node):
         result_matrix = np.dot(matrix_4x3, matrix_3x1)        
         serial_port = '/dev/ttyACM0'
         baud_rate = 115200
-        with serial.Serial(serial_port, baud_rate, timeout=1) as ser:
+        with serial.Serial(serial_port, baud_rate, timeout=0.5) as ser:
             # Open serial port
             time.sleep(2) 
 
