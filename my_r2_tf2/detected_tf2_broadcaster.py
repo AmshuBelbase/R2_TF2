@@ -97,8 +97,8 @@ class FramePublisher(Node):
                 dist = np.interp(dist, width_height_max, ball_distance)
                 dist = int(dist)
 
-                self.linear_x = (int(width/2) - box[0])/10
-                self.linear_y = (height - box[1])/10
+                self.linear_x = (int(width/2) - box[0])/40
+                self.linear_y = (height - box[1])/40
                 plt.arrow(0,0,self.linear_x,self.linear_y, width=0.5)
                 plt.show(block=False)
                 plt.pause(0.01) 
@@ -140,7 +140,7 @@ class FramePublisher(Node):
         t.child_frame_id = self.target_frame
 
         x_axis = self.linear_x
-        y_axis = 0 - self.linear_y
+        y_axis = self.linear_y
 
         x_axis_f = float(x_axis)
         y_axis_f = float(y_axis)
