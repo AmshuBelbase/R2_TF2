@@ -16,7 +16,7 @@ INPUT_HEIGHT = 640
 SCORE_THRESHOLD = 0.2 
 NMS_THRESHOLD = 0.4
 CONFIDENCE_THRESHOLD = 0.4
-cam_source = 1
+cam_source = 2
 FRAME_SKIP = 2  # Number of frames to skip
 is_cuda = len(sys.argv) > 1 and sys.argv[1] == "cuda"
 
@@ -55,7 +55,7 @@ class FramePublisher(Node):
                 break
             frame = frame_all
             # Split the stereo frame into left and right images
-            if cam_source == 3:
+            if cam_source == 2:
                 height, width, _ = frame_all.shape
                 width //= 2
                 frame = frame_all[:, :width, :]
@@ -106,9 +106,9 @@ class FramePublisher(Node):
 
                     self.linear_x = (int(width/2) - box[0])/40
                     self.linear_y = (height - box[1])/40
-                    plt.arrow(0,0,self.linear_x,self.linear_y, width=0.5)
-                    plt.show(block=False)
-                    plt.pause(0.01) 
+                    # plt.arrow(0,0,self.linear_x,self.linear_y, width=0.5)
+                    # plt.show(block=False)
+                    # plt.pause(0.01) 
                     # Initialize the transform broadcaster
                     self.tf_broadcaster = TransformBroadcaster(self)
                     self.on_timer_publish()
