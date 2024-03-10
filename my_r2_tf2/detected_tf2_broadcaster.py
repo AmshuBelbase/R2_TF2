@@ -49,10 +49,15 @@ class FramePublisher(Node):
         prev_frame = None  # Previous frame for interpolation
 
         while True: 
-            _, frame = capture.read()
-            if frame is None:
+            _, frame_all = capture.read()
+            if frame_all is None:
                 print("End of stream")
                 break
+            # Split the stereo frame into left and right images
+            height, width, _ = frame_all.shape
+            width //= 2
+            frame = frame_all[:, :width, :]
+            right_frame = frame_all[:, width:, :]
             prev_frame = frame.copy()  # Save current frame for interpolation
 
             frame_count += 1
