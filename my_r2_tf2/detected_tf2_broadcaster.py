@@ -1,6 +1,6 @@
 from geometry_msgs.msg import TransformStamped
 import rclpy
-import os
+import os 
 from rclpy.node import Node
 from tf2_ros import TransformBroadcaster
 import random
@@ -103,9 +103,24 @@ class FramePublisher(Node):
                     ball_distance = [310, 280, 250, 230, 200, 180, 150, 125, 100, 90, 80, 70, 60, 50, 40] 
                     dist = np.interp(dist, width_height_max, ball_distance)
                     dist = int(dist)
+ 
+                    # Define the input and output range
+                    i_min = 40
+                    i_max = 310
+                    o_min = 100
+                    o_max = 60
+                    scale_factor = 100
+                    if(dist > 310 or dist < 40):
+                        scale_factor = 100
+                    else:
+                        scale_factor = (dist-i_min) * (o_max-o_min) / (i_max - i_min) + o_min 
+ 
 
-                    self.linear_x = (int(width/2) - box[0])/40
-                    self.linear_y = (height - box[1])/40
+                    self.linear_x = (int(width/2) - box[0])/scale_factor #nominal 40
+                    self.linear_y = (height - box[1])/scale_factor
+
+                    self.get_logger().info(f'distance - {dist} scale factor - {scale_factor} linear_x - {self.linear_x} linear_y - {self.linear_y}')
+
                     # plt.arrow(0,0,self.linear_x,self.linear_y, width=0.5)
                     # plt.show(block=False)
                     # plt.pause(0.01) 
@@ -150,8 +165,7 @@ class FramePublisher(Node):
         y_axis = self.linear_y
 
         x_axis_f = float(x_axis)
-        y_axis_f = float(y_axis)
-
+        y_axis_f = float(y_axis) 
         # We get x and y translation coordinates from the message
         # And set the z coordinate to 0
         t.transform.translation.x = x_axis_f
