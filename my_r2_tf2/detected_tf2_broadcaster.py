@@ -4,6 +4,7 @@ import os
 from rclpy.node import Node
 from tf2_ros import TransformBroadcaster
 import random
+import math
 import matplotlib.pyplot as plt
 import cv2 
 import sys
@@ -16,7 +17,7 @@ INPUT_HEIGHT = 640
 SCORE_THRESHOLD = 0.2 
 NMS_THRESHOLD = 0.4
 CONFIDENCE_THRESHOLD = 0.4
-cam_source = 2
+cam_source = 3
 FRAME_SKIP = 2  # Number of frames to skip
 is_cuda = len(sys.argv) > 1 and sys.argv[1] == "cuda"
 
@@ -55,7 +56,7 @@ class FramePublisher(Node):
                 break
             frame = frame_all
             # Split the stereo frame into left and right images
-            if cam_source == 2:
+            if cam_source == 3:
                 height, width, _ = frame_all.shape
                 width //= 2
                 frame = frame_all[:, :width, :]
@@ -108,7 +109,7 @@ class FramePublisher(Node):
                     i_min = 40
                     i_max = 310
                     o_min = 100
-                    o_max = 60
+                    o_max = 50
                     scale_factor = 100
                     if(dist > 310 or dist < 40):
                         scale_factor = 100
@@ -154,6 +155,29 @@ class FramePublisher(Node):
         result[0:row, 0:col] = frame
         return result
 
+    @staticmethod
+    def quaternion_from_euler(ai, aj, ak):
+        ai /= 2.0
+        aj /= 2.0
+        ak /= 2.0
+        ci = math.cos(ai)
+        si = math.sin(ai)
+        cj = math.cos(aj)
+        sj = math.sin(aj)
+        ck = math.cos(ak)
+        sk = math.sin(ak)
+        cc = ci*ck
+        cs = ci*sk
+        sc = si*ck
+        ss = si*sk
+
+        q = np.empty((4, ))
+        q[0] = cj*sc - sj*cs
+        q[1] = cj*ss + sj*cc
+        q[2] = cj*cs - sj*sc
+        q[3] = cj*cc + sj*ss
+
+        return q
 
     def on_timer_publish(self):
         t = TransformStamped() 
@@ -171,11 +195,13 @@ class FramePublisher(Node):
         t.transform.translation.x = x_axis_f
         t.transform.translation.y = y_axis_f
         t.transform.translation.z = 0.0 
-        
-        t.transform.rotation.x = 0.0
-        t.transform.rotation.y = 0.0
-        t.transform.rotation.z = 0.0
-        t.transform.rotation.w = 1.0
+
+        z_angle = float(math.atan2(y_axis_f / x_axis_f))
+        q = FramePublisher.quaternion_from_euler(0, 0, z_angle)
+        t.transform.rotation.x = q[0]
+        t.transform.rotation.y = q[1]
+        t.transform.rotation.z = q[2]
+        t.transform.rotation.w = q[3]
         self.get_logger().info(f'Transform Published - {t.header.frame_id} to {self.target_frame}')
 
         # Send the transformation
