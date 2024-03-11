@@ -15,7 +15,8 @@ class GetCmdVel(Node):
     def cmd_vel_callback(self, msg: Twist):
         linear_x = msg.linear.x
         linear_y = msg.linear.y
-        angular_z = msg.angular.z
+        rad_z = msg.angular.z
+        angular_z = rad_z * 57.29578
         self.get_logger().info(f"X: {linear_x}, Y: {linear_y}, Z: {angular_z}") 
         # Define a Inverse Kinetics ~ 4x3 matrix
         # matrix_4x3 = np.array([[11.1347660235131, -11.1363136451255, -5.21299212039026],

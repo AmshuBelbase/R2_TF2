@@ -17,7 +17,7 @@ INPUT_HEIGHT = 640
 SCORE_THRESHOLD = 0.2 
 NMS_THRESHOLD = 0.4
 CONFIDENCE_THRESHOLD = 0.4
-cam_source = 3
+cam_source = 0
 FRAME_SKIP = 2  # Number of frames to skip
 is_cuda = len(sys.argv) > 1 and sys.argv[1] == "cuda"
 
@@ -56,7 +56,7 @@ class FramePublisher(Node):
                 break
             frame = frame_all
             # Split the stereo frame into left and right images
-            if cam_source == 3:
+            if cam_source == 2:
                 height, width, _ = frame_all.shape
                 width //= 2
                 frame = frame_all[:, :width, :]
@@ -192,17 +192,23 @@ class FramePublisher(Node):
         y_axis_f = float(y_axis) 
         # We get x and y translation coordinates from the message
         # And set the z coordinate to 0
+        
         t.transform.translation.x = x_axis_f
         t.transform.translation.y = y_axis_f
         t.transform.translation.z = 0.0 
-
-        z_angle = float(math.atan2(y_axis_f / x_axis_f))
+        if(y_axis_f == 0 or x_axis_f == 0):
+            z_angle = 0.0
+        else:
+            z_angle = math.atan2(y_axis_f, x_axis_f)
+        # if(z_angle < 1.396 and z_angle > 1.745):
+        #     t.transform.translation.x = 0
+        #     t.transform.translation.y = 0
         q = FramePublisher.quaternion_from_euler(0, 0, z_angle)
         t.transform.rotation.x = q[0]
         t.transform.rotation.y = q[1]
         t.transform.rotation.z = q[2]
         t.transform.rotation.w = q[3]
-        self.get_logger().info(f'Transform Published - {t.header.frame_id} to {self.target_frame}')
+        self.get_logger().info(f'Angle - {t.transform.rotation.z} Transform Published - {t.header.frame_id} to {self.target_frame}')
 
         # Send the transformation
         self.tf_broadcaster.sendTransform(t)

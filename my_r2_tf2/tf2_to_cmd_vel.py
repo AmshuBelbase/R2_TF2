@@ -44,6 +44,7 @@ class FrameListener(Node):
         scale_forward_speed = 0.5
         msg.linear.x = scale_forward_speed * t.transform.translation.x
         msg.linear.y = scale_forward_speed * t.transform.translation.y
+        msg.angular.z = t.transform.rotation.z
         self.publisher.publish(msg) 
 
 
