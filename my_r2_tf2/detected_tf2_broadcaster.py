@@ -107,8 +107,8 @@ class FramePublisher(Node):
                     # Define the input and output range
                     i_min = 40
                     i_max = 310
-                    o_min = 100
-                    o_max = 50
+                    o_min = 80
+                    o_max = 30
                     scale_factor = 100
                     if(dist > 310 or dist < 40):
                         scale_factor = 100
