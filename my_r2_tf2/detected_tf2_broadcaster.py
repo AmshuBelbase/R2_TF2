@@ -3,13 +3,12 @@ import rclpy
 import os 
 from rclpy.node import Node
 from tf2_ros import TransformBroadcaster
-import random
-import math
+# import random 
 import matplotlib.pyplot as plt
 import cv2 
 import sys
 import numpy as np
-import serial 
+# import serial 
 import time 
 from launch_ros.substitutions import FindPackageShare
 INPUT_WIDTH = 640
@@ -17,7 +16,7 @@ INPUT_HEIGHT = 640
 SCORE_THRESHOLD = 0.2 
 NMS_THRESHOLD = 0.4
 CONFIDENCE_THRESHOLD = 0.4
-cam_source = 0
+cam_source = 2
 FRAME_SKIP = 2  # Number of frames to skip
 is_cuda = len(sys.argv) > 1 and sys.argv[1] == "cuda"
 
@@ -155,30 +154,6 @@ class FramePublisher(Node):
         result[0:row, 0:col] = frame
         return result
 
-    @staticmethod
-    def quaternion_from_euler(ai, aj, ak):
-        ai /= 2.0
-        aj /= 2.0
-        ak /= 2.0
-        ci = math.cos(ai)
-        si = math.sin(ai)
-        cj = math.cos(aj)
-        sj = math.sin(aj)
-        ck = math.cos(ak)
-        sk = math.sin(ak)
-        cc = ci*ck
-        cs = ci*sk
-        sc = si*ck
-        ss = si*sk
-
-        q = np.empty((4, ))
-        q[0] = cj*sc - sj*cs
-        q[1] = cj*ss + sj*cc
-        q[2] = cj*cs - sj*sc
-        q[3] = cj*cc + sj*ss
-
-        return q
-
     def on_timer_publish(self):
         t = TransformStamped() 
         t.header.stamp = self.get_clock().now().to_msg()
@@ -196,19 +171,12 @@ class FramePublisher(Node):
         t.transform.translation.x = x_axis_f
         t.transform.translation.y = y_axis_f
         t.transform.translation.z = 0.0 
-        if(y_axis_f == 0 or x_axis_f == 0):
-            z_angle = 0.0
-        else:
-            z_angle = math.atan2(y_axis_f, x_axis_f)
-        # if(z_angle < 1.396 and z_angle > 1.745):
-        #     t.transform.translation.x = 0
-        #     t.transform.translation.y = 0
-        q = FramePublisher.quaternion_from_euler(0, 0, z_angle)
-        t.transform.rotation.x = q[0]
-        t.transform.rotation.y = q[1]
-        t.transform.rotation.z = q[2]
-        t.transform.rotation.w = q[3]
-        self.get_logger().info(f'Angle - {t.transform.rotation.z} Transform Published - {t.header.frame_id} to {self.target_frame}')
+        
+        t.transform.rotation.x = 0.0
+        t.transform.rotation.y = 0.0
+        t.transform.rotation.z = 0.0
+        t.transform.rotation.w = 1.0
+        self.get_logger().info(f'Transform Published - {t.header.frame_id} to {self.target_frame}')
 
         # Send the transformation
         self.tf_broadcaster.sendTransform(t)

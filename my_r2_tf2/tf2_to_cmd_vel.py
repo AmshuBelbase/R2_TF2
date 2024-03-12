@@ -1,10 +1,7 @@
-import math
-
+# import math
 from geometry_msgs.msg import Twist
-
 import rclpy
 from rclpy.node import Node
-
 from tf2_ros import TransformException
 from tf2_ros.buffer import Buffer
 from tf2_ros.transform_listener import TransformListener 
@@ -21,13 +18,11 @@ class FrameListener(Node):
         self.tf_listener = TransformListener(self.tf_buffer, self)  
 
         self.publisher = self.create_publisher(Twist, '/cmd_vel', 1)
-        self.timer = self.create_timer(1.0, self.on_timer)
+        self.timer = self.create_timer(0.5, self.on_timer)
 
     def on_timer(self):
         from_frame_rel = self.target_frame
-        to_frame_rel = 'r2'
-        # from_frame_rel = 'r2'
-        # to_frame_rel = self.target_frame
+        to_frame_rel = 'r2' 
 
         try:
             t = self.tf_buffer.lookup_transform(
