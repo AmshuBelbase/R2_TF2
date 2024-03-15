@@ -18,7 +18,7 @@ class FrameListener(Node):
         self.tf_listener = TransformListener(self.tf_buffer, self)  
 
         self.publisher = self.create_publisher(Twist, '/cmd_vel', 1)
-        self.timer = self.create_timer(0.1, self.on_timer)
+        self.timer = self.create_timer(0.05, self.on_timer)
 
     def on_timer(self):
         from_frame_rel = self.target_frame

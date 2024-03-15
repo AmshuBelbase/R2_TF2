@@ -44,6 +44,7 @@ class GetCmdVel(Node):
                 str(br)) + "#"
         
         # Send data
+        # time.sleep(0.05)
         ser.write(data.encode())  
         self.get_logger().info(f"Sent: {data}")
         self.get_logger().info(f"Front Right: {result_matrix[0,0]}, Front Left: {result_matrix[1,0]}, Back Left: {result_matrix[2,0]}, Back Right: {result_matrix[3,0]}")
